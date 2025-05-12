@@ -15,7 +15,7 @@ def charger_modele():
     if not os.path.exists(model_path):
         try:
             st.sidebar.warning("⚠️ Téléchargement du modèle...")
-            url = "https://drive.google.com/uc?id=1nGyl2AfgxNxPtVtileso-VTJCeJud2Xa"
+            url = "https://drive.google.com/file/d/1v3zgNN7XLf4pk_kQWjfQaD3oMGebkD3X/view?usp=sharing"
             gdown.download(url, model_path, quiet=False)
             st.sidebar.success("✅ Modèle téléchargé !")
         except Exception as e:
