@@ -2,8 +2,30 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# Chargement du modèle
-model = joblib.load('C:\\Users\\Probook\\Desktop\\python\\ML\\bank\\model.joblib')
+# === 1. Chargement du modèle ===
+def charger_modele():
+    model_path = "model.joblib"
+    os.makedirs("models", exist_ok=True)
+    
+    if not os.path.exists(model_path):
+        try:
+            st.sidebar.warning("⚠️ Téléchargement du modèle...")
+            url = "https://drive.google.com/file/d/1nGyl2AfgxNxPtVtileso-VTJCeJud2Xa/view?usp=sharing"
+            gdown.download(url, model_path, quiet=False)
+            st.sidebar.success("✅ Modèle téléchargé !")
+        except Exception as e:
+            st.sidebar.error(f"❌ Échec du téléchargement : {str(e)}")
+            st.stop()
+    
+    try:
+        model = load_model(model_path)
+        st.sidebar.success("✅ Modèle chargé avec succès")
+        return model
+    except Exception as e:
+        st.sidebar.error(f"❌ Erreur de chargement : {str(e)}")
+        st.stop()
+
+modele = charger_modele()
 
 st.set_page_config(page_title="BankDeposit - Prédiction", layout="centered")
 
