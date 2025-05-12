@@ -1,6 +1,9 @@
 import streamlit as st
 import joblib
 import numpy as np
+import os
+import gdown
+import tensorflow as tf
 
 # === 1. Chargement du modèle ===
 def charger_modele():
