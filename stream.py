@@ -4,6 +4,9 @@ import numpy as np
 import os
 import gdown
 
+# ✅ Cette ligne doit être AVANT tout autre appel Streamlit
+st.set_page_config(page_title="BankDeposit - Prédiction", layout="centered")
+
 # === 1. Chargement du modèle ===
 def charger_modele():
     model_path = "model.joblib"
@@ -12,7 +15,6 @@ def charger_modele():
     if not os.path.exists(model_path):
         try:
             st.sidebar.warning("⚠️ Téléchargement du modèle...")
-            # ✅ URL corrigée pour gdown
             url = "https://drive.google.com/uc?id=1nGyl2AfgxNxPtVtileso-VTJCeJud2Xa"
             gdown.download(url, model_path, quiet=False)
             st.sidebar.success("✅ Modèle téléchargé !")
@@ -21,7 +23,7 @@ def charger_modele():
             st.stop()
     
     try:
-        model = joblib.load(model_path)  # ✅ Utilise joblib pour charger le fichier .joblib
+        model = joblib.load(model_path)
         st.sidebar.success("✅ Modèle chargé avec succès")
         return model
     except Exception as e:
@@ -31,11 +33,9 @@ def charger_modele():
 # Charger le modèle
 modele = charger_modele()
 
-# Configuration de la page
-st.set_page_config(page_title="BankDeposit - Prédiction", layout="centered")
 st.title("BankDeposit - Prédiction")
 
-# Formulaire utilisateur
+# Formulaire
 with st.form("prediction_form"):
     age = st.number_input("Âge", min_value=18, max_value=100, step=1)
     balance = st.number_input("Balance")
@@ -57,7 +57,6 @@ with st.form("prediction_form"):
 
     submit = st.form_submit_button("Lancer la prédiction")
 
-# Si le bouton est cliqué
 if submit:
     features = np.array([[age, balance, duration, campaign, previous,
                           int(default == "Oui"), int(housing == "Oui"), int(loan == "Oui"),
